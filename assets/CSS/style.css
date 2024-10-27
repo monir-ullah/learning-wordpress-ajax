@@ -4,3 +4,18 @@ input {
   margin: 20px 0px;
   width: 100%;
 }
+
+.btn.button-primary {
+  background: #111111;
+  border-color: #111111;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.btn.button-primary:hover {
+  background-color: #424242;
+  cursor: pointer;
+}
