@@ -19,7 +19,37 @@ class WP_Ajax_Plug {
         
         add_shortcode( 'auth', [$this, 'user_authentication_shortcode'] );
         add_action( 'wp_ajax_update_user_profile_form', [$this, 'update_user_profile_form'] );
-        // add_action( 'wp_ajax_nopriv_update_user_profile_form', [$this, 'update_user_profile_form'] );
+        add_action( 'wp_ajax_nopriv_user_login_form_action', [$this, 'login_user_from_front_end'] );
+    }
+
+
+    public function login_user_from_front_end(){
+        check_ajax_referer( 'user_login_form_nonce' );
+
+        $user_login = wp_unslash( $_POST['user_login'] );
+        $user_password = wp_unslash( $_POST['user_password'] );
+
+        $user_info = wp_signon( [
+            'user_login' => $user_login,
+            'user_password' => $user_password,
+            'remember' => true
+        ], true );
+
+        if(is_wp_error( $user_info )){
+            wp_send_json( [
+                'success' => false,
+                'error_message' => $user_info-> get_error_message(),
+                'user_object' => $user_info
+            ]);
+        }
+
+        wp_send_json( [
+            wp_send_json( [
+                'success' => true,
+                'success_message' => 'User Login  Successfull',
+                'user_object' => $user_info
+            ])
+        ] );
     }
 
     public function update_user_profile_form(){
@@ -42,9 +72,6 @@ class WP_Ajax_Plug {
             ]);
         }
 
-        // echo "<pre>";
-        // var_dump($updated_info);
-        // echo "</pre>";
 
         if(is_wp_error( $updated_info )){
            wp_send_json( ['error'=> "Error"] );
@@ -55,6 +82,7 @@ class WP_Ajax_Plug {
            'display_name' => $display_name,
            'user_email' => $user_email,
            'user_id' => $user_id,
+           'update_message' => $updated_info
         ] );
     }
 
@@ -90,21 +118,23 @@ class WP_Ajax_Plug {
                 <h3>Update User Profile:</h3>
                 <form action="" method="POST" name="user_profile_update" id="user_profile_update">
                     <input type="text" name="display_name " id="display_name" value="<?php echo $display_name ?>" placeholder="Your Display Name ">
-                    <input type="email" name="user_email " id="user_email" value="<?php echo $user_email ?>" placeholder="Your Display Name ">
+                    <input type="email" name="user_email " id="user_email" value="<?php echo $user_email ?>" placeholder="Email">
                     <?php wp_nonce_field( 'update_user_profile_nonce' );?>
                     <button type="submit" id="update_profile_btn" class="btn button-primary">Update Button</button>
                 </form>
             <?php
         }else{
             ?>
-                <h3>Update User Profile:</h3>
-                <form action="" method="post" name="user_login">
-                    <input type="text" name="display_name " id="display_name" value="" placeholder="Your Display Name ">
-                    <input type="email" name="display_name " id="display_name" value="" placeholder="Your Display Name ">
-                    <!-- <button type="submit" id="update_profile_btn">Update Button</button> -->
+                <h1>Login Page</h1>
+                <p id="user_login_message"></p>
+                <form action="" method="post" name="user_login_form" id="user_login_form">
+                    <input type="text" name="user_name " id="user_name" value="" placeholder="Your User Name">
+                    <input type="password" name="user_password " id="user_password" value="" placeholder="Enter Your Password ">
+                    <?php wp_nonce_field( 'user_login_form_nonce' );?>
+                    <button type="submit" id="user_login_form_btn">Log In</button>
                 </form>
             <?php
-            return;
+            
         }
         return ob_get_clean();
     }
