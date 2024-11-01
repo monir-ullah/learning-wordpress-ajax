@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
 import "../CSS/style.css";
-import { Button } from "@wordpress/components";
 
 function App() {
   return (

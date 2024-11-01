@@ -1,1 +1,0 @@
-{"version":3,"file":"./style-index.css","mappings":";;;AAAA;EACE,aAAa;EACb,qBAAgB;OAAhB,gBAAgB;AAClB","sources":["webpack://wp-ajax/./assets/JS/src/CSS/style.css"],"sourcesContent":["nav#nav-bar {\r\n  display: flex;\r\n  column-gap: 25px;\r\n}\r\n"],"names":[],"sourceRoot":""}

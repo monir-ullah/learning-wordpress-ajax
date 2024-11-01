@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
+
+// ...
 
 const About = () => {
   const [userInfo, setUserInfo] = useState({});
@@ -20,6 +23,7 @@ const About = () => {
       })
       .then((response) => {
         console.log(response);
+        toast.success("Option updated successfully!");
       });
   };
 
@@ -35,11 +39,13 @@ const About = () => {
       .then((response) => {
         setUserInfo(response.data);
         console.log(response.data);
+        toast.success("Option loaded successfully!");
       });
   }, []);
 
   return (
     <>
+      <Toaster richColors position="bottom-right" />
       <form onSubmit={handleFormSubmit}>
         <table className="form-table" role="presentation">
           <tbody>
