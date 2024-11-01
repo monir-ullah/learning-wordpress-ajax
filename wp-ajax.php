@@ -7,6 +7,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+
+
+
+require_once plugin_dir_path(__FILE__) . 'assets/php/admin-panel.php';
+
+
 class WP_Ajax_Plug {
 
     public function __construct() {
@@ -20,6 +26,8 @@ class WP_Ajax_Plug {
         add_shortcode( 'auth', [$this, 'user_authentication_shortcode'] );
         add_action( 'wp_ajax_update_user_profile_form', [$this, 'update_user_profile_form'] );
         add_action( 'wp_ajax_nopriv_user_login_form_action', [$this, 'login_user_from_front_end'] );
+
+        new Admin_Panel();
     }
 
 
@@ -141,8 +149,11 @@ class WP_Ajax_Plug {
 
     public function wp_ajax_menu_page() {
         add_menu_page(
-            "Ajax Page", "Ajax Menu", 'manage_options',
-            'ajax-plug-page', [$this, 'wp_ajax_add_menu_page'],
+            "Ajax Page", 
+            "Ajax Menu", 
+            'manage_options',
+            'ajax-plug-page', 
+            [$this, 'wp_ajax_add_menu_page'],
             'dashicons-admin-plugins'
         );
     }

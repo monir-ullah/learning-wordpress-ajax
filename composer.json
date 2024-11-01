@@ -1,0 +1,10 @@
+{
+    "name": "monirullah/wp-ajax",
+    "authors": [
+        {
+            "name": "Monir Ullah",
+            "email": "mullah725@gmail.com"
+        }
+    ],
+    "require": {}
+}
